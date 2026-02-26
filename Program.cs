@@ -59,7 +59,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/User/Login";
     options.LogoutPath = "/User/Logout";
-    options.Cookie.Name = "MITCRMS";
+    options.Cookie.Name = "MITCRMS"; 
     options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
     options.SlidingExpiration = true;
 });
