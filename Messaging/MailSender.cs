@@ -58,6 +58,25 @@ namespace MITCRMS.Implementation.Messaging
                         
                 }
             }
+
+            if (!string.IsNullOrEmpty(smtpApiKey))
+            {
+                brevo_csharp.Client.Configuration.Default.AddApiKey("api-key", smtpApiKey);
+                try
+                {
+                    await apiInstance.SendTransacEmailAsync(sendSmtpEmail);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError("Exception when calling TransactionalEmailsApi.SendTransacEmail: " + e.Message);
+                    throw new MailSenderException(e.Message, e);
+                }
+            }
+
+            _logger.LogError("SMTP API Key is not configured.");
+            throw new MailSenderException("SMTP API Key is not configured.");
+
         }
 
         private static byte[] ReadFully(Stream input)

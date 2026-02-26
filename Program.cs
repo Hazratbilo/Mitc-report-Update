@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Mitc_report_Update.BackgroundWorker;
 using MITCRMS.Identity;
 using MITCRMS.Implementation.Repository;
 using MITCRMS.Implementation.Services;
@@ -40,7 +41,10 @@ builder.Services.Scan(scan => scan
         .WithScopedLifetime()
 );
 
-// explicit Identity stores and identity configuration (keep explicit — avoids accidental overrides)
+
+builder.Services.AddHostedService<WeeklyReportReminderBackgroundService>();
+
+// explicit Identity stores and identity configuration (keep explicit ï¿½ avoids accidental overrides)
 builder.Services.AddScoped<IUserStore<User>, UserStore>();
 builder.Services.AddScoped<IRoleStore<Role>, RoleStore>();
 builder.Services.AddIdentity<User, Role>()
@@ -52,14 +56,14 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateReportValidation>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
-   
+
 
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/User/Login";
     options.LogoutPath = "/User/Logout";
-    options.Cookie.Name = "MITCRMS"; 
+    options.Cookie.Name = "MITCRMS";
     options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
     options.SlidingExpiration = true;
 });
