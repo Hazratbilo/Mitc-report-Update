@@ -1,0 +1,78 @@
+﻿@using MITCRMS.Models.DTOs.Report
+@using MITCRMS.Models.Enum
+@model IEnumerable<ReportDto>
+
+@{
+    Layout = "_Layout";
+}
+
+<main id="main" class="main">
+    <div class="pagetitle">
+
+        <h1><i class="bi bi-person-check-fill"></i> Welcome @User.Identity.Name</h1>
+
+        <br />
+        <br />
+   <div class="row g-4">
+            <a asp-controller="Report"
+                asp-action="GetAllReports"
+           asp-route-status=""
+           class="text-decoration-none">
+            <div class="col-md-4">
+                <div class="card text-white bg-dark shadow-sm">
+                    <div class="card-body">
+                        <h6>Total Reports</h6>
+                        <h3>@Model?.Count()</h3>
+                    </div>
+                </div>
+                </div>
+                </a>
+
+           <div class="col-md-4">
+                <a asp-controller="Report"
+                    asp-action="GetAllReports"
+           asp-route-status="@ReportStatus.Pending"
+           class="text-decoration-none">
+
+                <div class="card text-white bg-warning shadow-sm">
+                    <div class="card-body">
+                        <h6>Pending</h6>
+                        <h3>@Model.Count(r => r.Status == ReportStatus.Pending)</h3>
+                    </div>
+                </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a asp-controller="Report"
+                    asp-action="GetAllReports"
+           asp-route-status="@ReportStatus.Approved"
+           class="text-decoration-none">
+
+                <div class="card text-white bg-success shadow-sm">
+                    <div class="card-body">
+                        <h6>Approved</h6>
+                        <h3>@Model.Count(r => r.Status == ReportStatus.Approved)</h3>
+                    </div>
+                </div>
+                </a>
+            </div>
+
+           <div class="col-md-4">
+                <a asp-controller="Report"
+                    asp-action="GetAllReports"
+           asp-route-status="@ReportStatus.Rejected"
+           class="text-decoration-none">
+
+                <div class="card text-white bg-danger shadow-sm">
+                    <div class="card-body">
+                        <h6>Cancelled</h6>
+                        <h3>@Model.Count(r => r.Status == ReportStatus.Rejected)</h3>
+                    </div>
+                </div>
+                </a>
+            </div>
+            </div>
+
+        </div>
+</main>
