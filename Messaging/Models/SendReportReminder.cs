@@ -4,6 +4,6 @@
     {
         public string Title { get; set; }
         public string Message { get; set; }
-        public string ActionText { get; set; } = "Report Report";
+        public string ActionText { get; set; } = "Open Report Portal";
     }
 }
