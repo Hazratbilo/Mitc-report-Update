@@ -20,6 +20,7 @@ namespace MITCRMS.Interface.Repository
         Task UpdateAsync(Report report);
         Task<IReadOnlyList<Report>> GetMyReports(Expression<Func<Report, bool>> expression);
         Task<List<Report>> GetAllReportAsync();
+        Task<List<User>> GetStaffWithoutReportWeek();
 
 
     }

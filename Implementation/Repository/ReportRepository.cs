@@ -5,6 +5,7 @@ using MITCRMS.Interface.Repository;
 using MITCRMS.Models.Entities;
 using MITCRMS.Models.Enum;
 using MITCRMS.Persistence.Context;
+using MITCRMS.Persistence.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -164,6 +165,18 @@ namespace MITCRMS.Implementation.Repository
         {
             _mitcrmsContext.Set<Report>().Update(report);
             await _mitcrmsContext.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> GetStaffWithoutReportWeek()
+        {
+            var (year, weekNumber) = ReportingWeekHelper.GetCurrentReportingWeek();
+
+            return await _mitcrmsContext.Set<User>()
+                .Where(u => !_mitcrmsContext.Set<Report>()
+                .Any(r => r.UserID == u.Id && 
+                r.Year == year &&
+                r.WeekNumber == weekNumber))
+                .ToListAsync();
         }
     }
     }

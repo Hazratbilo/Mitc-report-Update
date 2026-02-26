@@ -5,19 +5,14 @@ namespace MITCRMS.Models.Entities
 {
     public class Report : BaseEntity
     {
-        public string Tittle { get; set; }
-        public string Content { get; set; }
-        
+        public required string Tittle { get; set; }
+        public required string Content { get; set; }       
         public string? FileUrl { get; set; }
-
         public Guid? UserID { get; set; }
         public User User { get; set; }
 
-
-
-
-
-
+        public int Year { get; set; }
+        public int WeekNumber { get; set; }
 
         public Guid? ApprovedByAdminId { get; set; }
         public DateTime? ReportDate { get; set; }
