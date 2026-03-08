@@ -7,13 +7,19 @@ using MITCRMS.Models.Enum;
 
 namespace Mitc_report_Update.BackgroundWorker
 {
-    public class WeeklyReportReminderBackgroundService(IServiceProvider serviceProvider, ILogger<WeeklyReportReminderBackgroundService> logger) : BackgroundService
+    public class WeeklyReportReminderBackgroundWorker : BackgroundService
     {
-        private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        private readonly ILogger<WeeklyReportReminderBackgroundService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly IServiceScopeFactory _scopeFactory;
+        private readonly ILogger<WeeklyReportReminderBackgroundWorker> _logger;
 
+        public WeeklyReportReminderBackgroundWorker(IServiceScopeFactory scopeFactory, ILogger<WeeklyReportReminderBackgroundWorker> logger)
+        {
+            _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            await Task.Yield();
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
@@ -22,7 +28,7 @@ namespace Mitc_report_Update.BackgroundWorker
 
                     if (reminderLevel.HasValue)
                     {
-                        using var scope = _serviceProvider.CreateScope();
+                        using var scope = _scopeFactory.CreateScope();
                         var service = scope.ServiceProvider
                             .GetRequiredService<IReportReminderService>();
 
@@ -34,7 +40,7 @@ namespace Mitc_report_Update.BackgroundWorker
                     _logger.LogError(ex, "Error running weekly reminder job.");
                 }
 
-                await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
             }
         }
 
@@ -44,13 +50,13 @@ namespace Mitc_report_Update.BackgroundWorker
 
             return now.DayOfWeek switch
             {
-                DayOfWeek.Friday when now.Hour == 17
+                DayOfWeek.Tuesday when now.Hour == 15 && now.Minute == 08
                     => ReminderLevel.Friendly,
 
-                DayOfWeek.Saturday when now.Hour == 10
+                DayOfWeek.Tuesday when now.Hour == 13 && now.Minute == 09
                     => ReminderLevel.FollowUp,
 
-                DayOfWeek.Sunday when now.Hour == 16
+                DayOfWeek.Tuesday when now.Hour == 15 && now.Minute == 10
                     => ReminderLevel.FinalNotice,
 
                 _ => null

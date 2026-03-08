@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mitc_reportzUpdate.Interface.TemplateEngine
+namespace Mitc_report_Update.Interface.TemplateEngine
 {
     public interface IRazorEngine
     {

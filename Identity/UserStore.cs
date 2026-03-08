@@ -72,7 +72,9 @@ namespace MITCRMS.Identity
             return await _context.Set<User>().SingleOrDefaultAsync(u => u.Email.ToLower() == normalizedEmail, cancellationToken);
         }
 
+#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
+#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (string.IsNullOrEmpty(userId))

@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Mitc_report_Update.Extensions.Exceptions;
-using Mitc_reportzUpdate.Interface.TemplateEngine;
+using Mitc_report_Update.Interface.TemplateEngine;
 
-namespace Mitc_reportzUpdate.Implementation.TemplateEngine
+namespace Mitc_report_Update.Implementation.TemplateEngine
 {
     public class RazorEngine : IRazorEngine
     {

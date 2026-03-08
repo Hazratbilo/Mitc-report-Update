@@ -115,21 +115,25 @@ namespace MITCRMS.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "SuperAdmin")]
+        [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> CreateUser()
         {
             var roles = await _roleServices.GetRolesAsync();
             var departments = await _departmentServices.GetAllDepartmentsAsync();
 
+            if (departments?.Data == null || !departments.Data.Any())
+            {
+                return RedirectToAction("CreateDepartment", "Department");
+            }
+
             ViewData["Departments"] = new SelectList(departments.Data, "Id", "DepartmentName");
             ViewData["Roles"] = new MultiSelectList(roles.Data, "Id", "Name");
 
-
             Console.WriteLine(ViewData["Roles"]);
-
 
             return View();
         }
-
         [HttpPost]
         [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> CreateUser(CreateUserRequestModel model)

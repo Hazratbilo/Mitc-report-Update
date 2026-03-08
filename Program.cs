@@ -4,9 +4,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Mitc_report_Update.BackgroundWorker;
+using Mitc_report_Update.Configuration;
+using Mitc_report_Update.Implementation.TemplateEngine;
+using Mitc_report_Update.Interface.TemplateEngine;
 using MITCRMS.Identity;
+using MITCRMS.Implementation.Messaging;
 using MITCRMS.Implementation.Repository;
 using MITCRMS.Implementation.Services;
+using MITCRMS.Interface.Messaging;
 using MITCRMS.Interface.Repository;
 using MITCRMS.Interface.Services;
 using MITCRMS.Models.DTOs.Report.Validation;
@@ -41,8 +46,7 @@ builder.Services.Scan(scan => scan
         .WithScopedLifetime()
 );
 
-
-builder.Services.AddHostedService<WeeklyReportReminderBackgroundService>();
+builder.Services.AddHostedService<WeeklyReportReminderBackgroundWorker>();
 
 // explicit Identity stores and identity configuration (keep explicit � avoids accidental overrides)
 builder.Services.AddScoped<IUserStore<User>, UserStore>();
@@ -51,6 +55,10 @@ builder.Services.AddIdentity<User, Role>()
     .AddDefaultTokenProviders();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+
+builder.Services.AddScoped<IMailSender, MailSender>();
+builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
+builder.Services.AddScoped<IRazorEngine, RazorEngine>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateReportValidation>();

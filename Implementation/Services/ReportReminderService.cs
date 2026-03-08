@@ -28,7 +28,7 @@ namespace MITCRMS.Implementation.Services
             foreach (var staff in defaulters)
             {
                 var (subject, body) = BuildMessage(level);
-
+                Console.WriteLine($"Email: {staff.Email}");
                 var isSent = await _mailService.SendReminderMail(staff.Email, staff.FirstName, subject, body);
 
                 if (!isSent) anyFailure = true;

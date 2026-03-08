@@ -8,7 +8,7 @@ using Mitc_report_Update.Configuration;
 using Mitc_report_Update.Exceptions;
 using Mitc_report_Update.Extensions.Exceptions;
 using Mitc_report_Update.Interface.MailingService;
-using Mitc_reportzUpdate.Interface.TemplateEngine;
+using Mitc_report_Update.Interface.TemplateEngine;
 using MITCRMS.Implementation.Messaging.Models;
 using MITCRMS.Interface.Messaging;
 

@@ -37,63 +37,7 @@ namespace MITCRMS.Implementation.Services
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
-        private static (bool, string?) ValidatePassword(string password)
-        {
-            // Minimum length of password
-            int minLength = 8;
-
-            // Maximum length of password
-            int maxLength = 50;
-
-            // Check for null or empty password
-            if (string.IsNullOrEmpty(password))
-            {
-                return (false, "Password cannot be null or empty.");
-            }
-
-            // Check length of password
-            if (password.Length < minLength || password.Length > maxLength)
-            {
-                return (false, $"Password must be between {minLength} and {maxLength} characters long.");
-            }
-
-            // Check for at least one uppercase letter, one lowercase letter, and one digit
-            bool hasUppercase = false;
-            bool hasLowercase = false;
-            bool hasDigit = false;
-
-            foreach (char c in password)
-            {
-                if (char.IsUpper(c))
-                {
-                    hasUppercase = true;
-                }
-                else if (char.IsLower(c))
-                {
-                    hasLowercase = true;
-                }
-                else if (char.IsDigit(c))
-                {
-                    hasDigit = true;
-                }
-            }
-
-            if (!hasUppercase || !hasLowercase || !hasDigit)
-            {
-                return (false, "Password must contain at least one uppercase letter, one lowercase letter, and one digit.");
-            }
-
-            // Check for any characters
-            string invalidCharacters = @" !""#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
-            if (password.IndexOfAny(invalidCharacters.ToCharArray()) == -1)
-            {
-                return (false, "Password must contain one or more characters.");
-            }
-
-            // Password is valid
-            return (true, null);
-        }
-
+       
         public async Task<BaseResponse<bool>> CreateUserAsync(CreateUserRequestModel request)
         {
             if (request == null)
@@ -126,15 +70,6 @@ namespace MITCRMS.Implementation.Services
                     Status = false,
                 };
             }
-
-            if (request.PasswordHash != request.ConfirmPassword) return new BaseResponse<bool>
-            {
-                Message = "Password doesnt match!",
-                Status = false,
-            };
-
-            (var passwordResult, var message) = ValidatePassword(request.PasswordHash);
-            if (!passwordResult) return new BaseResponse<bool> { Message = message, Status = false };
 
             try
             {
