@@ -300,18 +300,17 @@ namespace MITCRMS.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<IActionResult> ApproveReport(Guid id)
-        {
+      public async Task<IActionResult> ApproveReport(Guid id)
+{
+    var success = await _reportServices.ChangeReportStatusAsync(id, ReportStatus.Approved);
 
-            var success = await _reportServices.ChangeReportStatusAsync(id, ReportStatus.Approved);
+    if (success)
+        TempData["SuccessMessage"] = "Report Approved!";
+    else
+        TempData["ErrorMessage"] = "Unable to process approval.";
 
-            if (success)
-                TempData["SuccessMessage"] = "Report Approved!";
-            else
-                TempData["ErrorMessage"] = "Unable to process approval.";
-
-            return RedirectToAction(nameof(GetAllReports));
-        }
+    return RedirectToAction(nameof(GetAllReports));
+}
 
         [ValidateAntiForgeryToken]
         [HttpPost]

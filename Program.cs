@@ -2,10 +2,13 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Mitc_report_Update.BackgroundWorker;
 using Mitc_report_Update.Configuration;
+using Mitc_report_Update.Implementation.MailingService;
 using Mitc_report_Update.Implementation.TemplateEngine;
+using Mitc_report_Update.Interface.MailingService;
 using Mitc_report_Update.Interface.TemplateEngine;
 using MITCRMS.Identity;
 using MITCRMS.Implementation.Messaging;
@@ -46,8 +49,9 @@ builder.Services.Scan(scan => scan
         .WithScopedLifetime()
 );
 
-builder.Services.AddHostedService<WeeklyReportReminderBackgroundWorker>();
 
+builder.Services.AddHostedService<WeeklyReportReminderBackgroundWorker>();
+builder.Services.AddScoped<IMailService, MailService>();
 // explicit Identity stores and identity configuration (keep explicit � avoids accidental overrides)
 builder.Services.AddScoped<IUserStore<User>, UserStore>();
 builder.Services.AddScoped<IRoleStore<Role>, RoleStore>();

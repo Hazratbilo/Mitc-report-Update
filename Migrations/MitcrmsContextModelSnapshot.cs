@@ -47,7 +47,7 @@ namespace MITCRMS.Migrations
                         new
                         {
                             Id = new Guid("c8f2e7bb-9f34-4b97-8b7c-1a5e46c77e42"),
-                            DateCreated = new DateTime(2026, 2, 26, 17, 25, 34, 922, DateTimeKind.Utc).AddTicks(9098),
+                            DateCreated = new DateTime(2026, 3, 10, 9, 3, 55, 472, DateTimeKind.Utc).AddTicks(903),
                             DepartmentCode = "D.O.S-001",
                             DepartmentName = "Director of Studies"
                         });
@@ -74,6 +74,9 @@ namespace MITCRMS.Migrations
 
                     b.Property<string>("FileUrl")
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("NotificationSent")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("ReportDate")
                         .HasColumnType("datetime(6)");

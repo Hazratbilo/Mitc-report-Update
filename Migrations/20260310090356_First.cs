@@ -97,6 +97,7 @@ namespace MITCRMS.Migrations
                     WeekNumber = table.Column<int>(type: "int", nullable: false),
                     ApprovedByAdminId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     ReportDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    NotificationSent = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ApprovedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -143,7 +144,7 @@ namespace MITCRMS.Migrations
             migrationBuilder.InsertData(
                 table: "Departments",
                 columns: new[] { "Id", "DateCreated", "DepartmentCode", "DepartmentName" },
-                values: new object[] { new Guid("c8f2e7bb-9f34-4b97-8b7c-1a5e46c77e42"), new DateTime(2026, 2, 26, 17, 25, 34, 922, DateTimeKind.Utc).AddTicks(9098), "D.O.S-001", "Director of Studies" });
+                values: new object[] { new Guid("c8f2e7bb-9f34-4b97-8b7c-1a5e46c77e42"), new DateTime(2026, 3, 10, 9, 3, 55, 472, DateTimeKind.Utc).AddTicks(903), "D.O.S-001", "Director of Studies" });
 
             migrationBuilder.InsertData(
                 table: "Roles",

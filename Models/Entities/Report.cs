@@ -16,6 +16,7 @@ namespace MITCRMS.Models.Entities
 
         public Guid? ApprovedByAdminId { get; set; }
         public DateTime? ReportDate { get; set; }
+        public bool NotificationSent { get; set; }
 
         public DateTime? ApprovedAt { get; set; }
 

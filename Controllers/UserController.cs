@@ -115,8 +115,6 @@ namespace MITCRMS.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "SuperAdmin")]
-        [HttpGet]
-        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> CreateUser()
         {
             var roles = await _roleServices.GetRolesAsync();
@@ -140,6 +138,8 @@ namespace MITCRMS.Controllers
         {
 
             var userStatus = await _userService.CreateUserAsync(model);
+            var roles = await _roleServices.GetRolesAsync();
+            var departments = await _departmentServices.GetAllDepartmentsAsync();
             if (userStatus.Status)
             {
                 ViewBag.Alert = userStatus.Status;
@@ -152,8 +152,19 @@ namespace MITCRMS.Controllers
 
                 ViewBag.Alert = userStatus.Status;
                 ViewBag.AlertType = "danger";
-                return View(model);
+                ModelState.AddModelError("Email", userStatus.Message);
+                
             }
+            if (departments?.Data == null || !departments.Data.Any())
+            {
+                return RedirectToAction("CreateDepartment", "Department");
+            }
+
+            ViewData["Departments"] = new SelectList(departments.Data, "Id", "DepartmentName");
+            ViewData["Roles"] = new MultiSelectList(roles.Data, "Id", "Name");
+
+            Console.WriteLine(ViewData["Roles"]);
+            return View(model);
         }
         [HttpGet]
         [Authorize(Roles = "SuperAdmin,User")]

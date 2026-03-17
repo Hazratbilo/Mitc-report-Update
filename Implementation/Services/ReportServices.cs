@@ -1,10 +1,14 @@
-﻿using MITCRMS.Implementation.Repository;
+﻿
+using Microsoft.EntityFrameworkCore;
+using Mitc_report_Update.Interface.MailingService;
+using MITCRMS.Implementation.Repository;
 using MITCRMS.Interface.Repository;
 using MITCRMS.Interface.Services;
 using MITCRMS.Models.DTOs;
 using MITCRMS.Models.DTOs.Report;
 using MITCRMS.Models.Entities;
 using MITCRMS.Models.Enum;
+using MITCRMS.Persistence.Context;
 
 
 
@@ -12,24 +16,29 @@ namespace MITCRMS.Implementation.Services
 {
     public class ReportServices : IReportServices
     {
+        private readonly MitcrmsContext _MitcrmsContext;
         private readonly IReportRepository _reportRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ReportServices> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IMailService _mailService;
 
         public ReportServices(
             IReportRepository reportRepository,
             IUserRepository userRepository,
             IUnitOfWork unitOfWork,
             IDepartmentRepository departmentRepository,
-            ILogger<ReportServices> logger)
+            ILogger<ReportServices> logger,  MitcrmsContext MitcrmsContext,
+            IMailService mailService)
         {
             _reportRepository = reportRepository;
             _unitOfWork = unitOfWork;
             _logger = logger;
             _userRepository = userRepository;
             _departmentRepository = departmentRepository;
+            _MitcrmsContext = MitcrmsContext;
+            _mailService = mailService;
         }
 
         public async Task<BaseResponse<bool>> AcceptReport(Guid id)
@@ -328,19 +337,29 @@ namespace MITCRMS.Implementation.Services
                 Status = r.Status,
             }).ToList();
         }
-        public async Task<bool> ChangeReportStatusAsync(Guid id, ReportStatus newStatus)
-        {
-            var report = await _reportRepository.GetRepordById(id);
-            if (report == null) return false;
+       public async Task<bool> ChangeReportStatusAsync(Guid id, ReportStatus status)
+{
+    var report = await _MitcrmsContext.Set<Report>()
+        .Include(r => r.User) 
+        .FirstOrDefaultAsync(r => r.Id == id);
 
-           
-            if (report.Status == ReportStatus.Rejected && newStatus == ReportStatus.Approved)
-                return false;
+    if (report == null)
+        return false;
 
-            report.Status = newStatus;
-            await _reportRepository.UpdateAsync(report);
-            return true;
-        }
+    report.Status = status;
 
-    }
+    await _MitcrmsContext.SaveChangesAsync();
+
+    // Send Email 
+    await _mailService.SendReportStatus(
+        report.User.Email,
+        report.User.FullName(),
+        report.Tittle,
+        status.ToString()
+        
+    );
+
+    return true;
 }
+    }
+    }
