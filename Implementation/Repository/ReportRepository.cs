@@ -73,12 +73,14 @@ namespace MITCRMS.Implementation.Repository
 
         public async Task<Report> GetRepordById(Guid id)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<Report>()
                 .Where(r => r.Id == id)
                 .Include(r => r.User)
                .ThenInclude(u => u.Department)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
    
@@ -113,12 +115,16 @@ namespace MITCRMS.Implementation.Repository
         }
         public async Task<Report> GetReportById(Guid id)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<Report>().FirstOrDefaultAsync(x => x.Id == id);
+#pragma warning restore CS8603 // Possible null reference return.
 
         }
         public async Task<Report> GetAllReportsById(Guid id)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<Report>().FirstOrDefaultAsync(x => x.Id == id);
+#pragma warning restore CS8603 // Possible null reference return.
 
         }
         public async Task<bool> DeleteReport(Report report)

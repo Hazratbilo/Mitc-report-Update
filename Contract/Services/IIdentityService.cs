@@ -17,11 +17,13 @@ namespace MITCRMS.Contract.Services
 
         string GenerateSalt();
 
+#pragma warning disable CS8625
         public string GetPasswordHash(string password, string salt = null);
+#pragma warning restore CS8625 
         Task<User> FindByNameAsync(string userName);
         Task<User> FindUserAsync(string userName);
         Task<IList<string>> GetRolesAsync(User user);
-        //bool CheckPasswordAsync(User user, string password);
+    
         public Task<User> GetLoggedInUser();
     }
 }

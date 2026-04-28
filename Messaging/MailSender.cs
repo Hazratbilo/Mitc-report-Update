@@ -12,12 +12,14 @@ namespace MITCRMS.Implementation.Messaging
         private readonly IConfiguration _config = config ?? throw new ArgumentNullException(nameof(config));
         private readonly IWebHostEnvironment _env = env ?? throw new ArgumentNullException(nameof(env));
         private readonly ILogger<MailSender> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+#pragma warning disable CS8625 
         public async Task<bool> SendEmailAsync(string from, string fromName, string to, string toName, string subject, string body, IDictionary<string, Stream> attachments = null)
+#pragma warning restore CS8625 
         {
             var smtpApiKey = _config["MITCRMSSettings:SmtpApiKey"];
             var apiInstance = new TransactionalEmailsApi();
 
-            // 1. Don't initialize the Attachment list here yet.
+           
             var sendSmtpEmail = new SendSmtpEmail
             {
                 Sender = new SendSmtpEmailSender(fromName, from),
@@ -28,8 +30,7 @@ namespace MITCRMS.Implementation.Messaging
 
             var emailAttachments = new List<SendSmtpEmailAttachment>();
 
-            // Process CID Assets (Images)
-            foreach (var asset in EmailAssetRegistry.AssetMap)
+                       foreach (var asset in EmailAssetRegistry.AssetMap)
             {
                 if (body.Contains($"cid:{asset.Key}"))
                 {

@@ -70,7 +70,9 @@ namespace MITCRMS.Identity
             var user = await _userRepository.Get<User>(u => u.Email == email);
             if (user == null)
             {
+#pragma warning disable CS8603 
                 return null;
+#pragma warning restore CS8603 
             }
             //return user;
             return new User
@@ -91,7 +93,9 @@ namespace MITCRMS.Identity
 
         public string GenerateToken(User user, IEnumerable<string> roles)
         {
+#pragma warning disable CS8604
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JwtTokenSettings:TokenKey").Value));
+#pragma warning restore CS8604 
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
             IList<Claim> claims = new List<Claim>
             {
@@ -123,18 +127,26 @@ namespace MITCRMS.Identity
 
                 var decodedToken = handler.ReadToken(token) as JwtSecurityToken;
 
+#pragma warning disable CS8603 
                 return decodedToken;
+#pragma warning restore CS8603 
             }
             Console.WriteLine(token);
+#pragma warning disable CS8603 
             return null;
+#pragma warning restore CS8603
         }
 
         public string GetClaimValue(string type)
         {
+#pragma warning disable CS8602 
             return _httpContextAccessor.HttpContext.User.FindFirst(type).Value;
+#pragma warning restore CS8602 
         }
 
+#pragma warning disable CS8625
         public string GetPasswordHash(string password, string salt = null)
+#pragma warning restore CS8625 
         {
             if (string.IsNullOrEmpty(salt))
             {
@@ -156,7 +168,9 @@ namespace MITCRMS.Identity
 
         public string GetUserIdentity()
         {
+#pragma warning disable CS8603
             return _httpContextAccessor.HttpContext?.User?.FindFirst(JwtRegisteredClaimNames.UniqueName)?.Value;
+#pragma warning restore CS8603 
         }
 
         //private string HashPasswordAsync(string password)
@@ -175,7 +189,9 @@ namespace MITCRMS.Identity
         public IEnumerable<Claim> ValidateToken(string jwtToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+#pragma warning disable CS8604
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("JwtTokenSettings:TokenKey").Value);
+#pragma warning restore CS8604
 
             try
             {
@@ -199,7 +215,9 @@ namespace MITCRMS.Identity
             }
             catch (Exception)
             {
+#pragma warning disable CS8603
                 return null;
+#pragma warning restore CS8603
             }
         }
 
@@ -209,6 +227,7 @@ namespace MITCRMS.Identity
             var httpContext = _httpContextAccessor.HttpContext;
 
             // Check if a user is authenticated
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             if (httpContext.User.Identity.IsAuthenticated)
             {
                 // Retrieve the user's unique identifier (e.g., user ID) from claims
@@ -220,6 +239,7 @@ namespace MITCRMS.Identity
 
 
             }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             // If no user is authenticated, return null
             throw new BadHttpRequestException("Unable to get logged in user");

@@ -50,7 +50,7 @@ namespace Mitc_report_Update.BackgroundWorker
 
             return now.DayOfWeek switch
             {
-                DayOfWeek.Friday when now.Hour == 17 && now.Minute == 00
+                DayOfWeek.Tuesday when now.Hour == 10 && now.Minute == 40
                     => ReminderLevel.Friendly,
 
                 DayOfWeek.Saturday when now.Hour == 09 && now.Minute == 00

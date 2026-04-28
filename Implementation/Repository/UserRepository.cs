@@ -31,30 +31,36 @@ namespace MITCRMS.Implementation.Repository
 
         public async Task<User> GetUserAndRoles(Guid UserId)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<User>()
                 .Where(u => u.Id == UserId)
                 .Include(u => u.UserRoles)
                 .ThenInclude(u => u.Role)
                 .SingleOrDefaultAsync();
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task<User> GetUserByEmail(string email)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<User>()
                 .Include(u => u.Department)
                 .Include(u => u.UserRoles)
                 .ThenInclude(u => u.Role)
                 .SingleOrDefaultAsync(u => u.Email == email);
+#pragma warning restore CS8603 // Possible null reference return.
 
         }
 
         public async Task<User> GetUserByIdAsync(Guid UserId)
 
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<User>()
                 .Include(a => a.Department)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == UserId);
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
 
@@ -66,6 +72,7 @@ namespace MITCRMS.Implementation.Repository
 
         public async Task<User> GetUserProfile(Guid UserId)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<User>()
                   .Include(p => p.Department)
                   .Include(u => u.UserRoles)
@@ -73,6 +80,7 @@ namespace MITCRMS.Implementation.Repository
                    .AsSplitQuery()
                   .AsNoTracking()
                   .SingleOrDefaultAsync();
+#pragma warning restore CS8603 // Possible null reference return.
         }
     
    public async Task<List<User>> GetAllUsersWithRolesAsync()
@@ -87,12 +95,14 @@ namespace MITCRMS.Implementation.Repository
         }
         public async Task<User> GetUserById(Guid id)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<User>()
                 .Include(u => u.Department)
                 .Include(u => u.UserRoles)
                     .ThenInclude(ur => ur.Role)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+#pragma warning restore CS8603 // Possible null reference return.
 
         }
         public async Task<bool> DeleteUser(User user)

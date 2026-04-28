@@ -27,7 +27,9 @@ namespace MITCRMS.Implementation.Repository
 
         public virtual async Task<T> Get<T>(Expression<Func<T, bool>> expression) where T : BaseEntity
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<T>().FirstOrDefaultAsync(expression);
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public virtual async Task<IReadOnlyList<T>> GetAll<T>() where T : BaseEntity

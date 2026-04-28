@@ -75,7 +75,9 @@ namespace MITCRMS.Implementation.Repository
 
         public async Task<Department> GetDepartmentById(Guid id)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return await _mitcrmsContext.Set<Department>().FirstOrDefaultAsync(x => x.Id == id);
+#pragma warning restore CS8603 // Possible null reference return.
 
         }
         public async Task<bool> DeleteDepartment(Department department)

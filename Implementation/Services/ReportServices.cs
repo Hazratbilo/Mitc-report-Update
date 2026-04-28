@@ -167,6 +167,8 @@ namespace MITCRMS.Implementation.Services
         }
         private static ReportDto MapToDto(Report r)
         {
+#pragma warning disable CS8601
+#pragma warning disable CS8602 
             return new ReportDto
             {
                 Id = r.Id,
@@ -187,6 +189,8 @@ namespace MITCRMS.Implementation.Services
                     UserId = r.User.Id,
                 } : null,
             };
+#pragma warning restore CS8602
+#pragma warning restore CS8601 
         }
         public async Task<IEnumerable<Report>> GetReportsByUserAsync(Guid UserId, string role)
         {

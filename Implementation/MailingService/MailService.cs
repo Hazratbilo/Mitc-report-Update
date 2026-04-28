@@ -60,12 +60,15 @@ namespace Mitc_report_Update.Implementation.MailingService
                     Email = email,
                     Title = title,
                     Message = status, 
-                    Status = status
+                    Status = status,
+                    SubmittedOn = DateTime.UtcNow,
+
                 };
 
                 var mailBody = await _razorEngine.ParseAsync("SendReportStatusMail", model);
 
-        
+
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                 return await _mailSender.SendEmailAsync(
                     _emailConfiguration.FromEmail,
                     _emailConfiguration.FromName,
@@ -75,6 +78,7 @@ namespace Mitc_report_Update.Implementation.MailingService
                     mailBody,
                     null
                 );
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             }
             catch (RazorEngineException ex)
             {

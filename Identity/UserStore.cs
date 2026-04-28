@@ -61,7 +61,9 @@ namespace MITCRMS.Identity
             _context.Dispose();
         }
 
+#pragma warning disable CS8613
         public async Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+#pragma warning restore CS8613
         {
             normalizedEmail = normalizedEmail.ToLower();
             cancellationToken.ThrowIfCancellationRequested();
@@ -69,10 +71,12 @@ namespace MITCRMS.Identity
             {
                 throw new ArgumentNullException(nameof(normalizedEmail));
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return await _context.Set<User>().SingleOrDefaultAsync(u => u.Email.ToLower() == normalizedEmail, cancellationToken);
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
-#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
+#pragma warning disable CS8613 
         public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
 #pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
@@ -81,20 +85,28 @@ namespace MITCRMS.Identity
             {
                 throw new ArgumentNullException(nameof(userId));
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return await _context.Set<User>().FindAsync(new object[] { Guid.Parse(userId) }, cancellationToken);
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
+#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public async Task<User> FindByNameAsync(string userName, CancellationToken cancellationToken)
+#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (string.IsNullOrEmpty(userName))
             {
                 throw new ArgumentNullException(nameof(userName));
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return await _context.Set<User>().FirstOrDefaultAsync(u => u.Email == userName, cancellationToken);
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
+#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public Task<string> GetEmailAsync(User user, CancellationToken cancellationToken)
+#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)
@@ -115,7 +127,9 @@ namespace MITCRMS.Identity
             return Task.FromResult(true);
         }
 
+#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
+#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)
@@ -125,7 +139,9 @@ namespace MITCRMS.Identity
             return Task.FromResult(user.Email.ToLower());
         }
 
+#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
+#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)
@@ -135,7 +151,9 @@ namespace MITCRMS.Identity
             return Task.FromResult(user.Email.ToLower());
         }
 
+#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public Task<string> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
+#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)
@@ -179,7 +197,9 @@ namespace MITCRMS.Identity
             return Task.FromResult(user.Id.ToString());
         }
 
+#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)
+#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)
@@ -239,7 +259,9 @@ namespace MITCRMS.Identity
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)
@@ -260,7 +282,9 @@ namespace MITCRMS.Identity
             return Task.CompletedTask;
         }
 
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public Task SetNormalizedEmailAsync(User user, string normalizedEmail, CancellationToken cancellationToken)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)
@@ -271,7 +295,9 @@ namespace MITCRMS.Identity
             return Task.CompletedTask;
         }
 
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)
@@ -282,13 +308,17 @@ namespace MITCRMS.Identity
             return Task.CompletedTask;
         }
 
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public Task SetPasswordHashAsync(User user, string passwordHash, CancellationToken cancellationToken)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             throw new NotImplementedException();
         }
 
 
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null)

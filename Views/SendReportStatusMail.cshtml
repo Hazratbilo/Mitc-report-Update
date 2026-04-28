@@ -34,12 +34,13 @@
                             </p>
 
                             <p style="color:#475569; line-height:1.7; font-size:15px;">
-                                Your report titled 
-                                <strong>@Model.Title</strong> has been 
+                                Your report titled
+                                <strong>@Model.Title</strong>, submitted on
+                                <strong>@Model.SubmittedOn.ToString("MMMM dd, yyyy 'at' hh:mm tt")</strong>, has been
                                 <strong style="color:@headerColor;">@statusText</strong>.
                             </p>
 
-                            @if(Model.Status == "Rejected")
+                            @if (Model.Status == "Rejected")
                             {
                                 <p style="color:#475569; font-size:14px;">
                                     Please review and make necessary corrections before resubmitting.
@@ -49,7 +50,7 @@
                             <!-- Button -->
                             <div style="margin:30px 0; text-align:center;">
                                 <a href="@Model.ActionLink"
-                                   style="background:#0f172a; color:#ffffff; padding:16px 30px; border-radius:8px; font-weight:600; text-decoration:none; display:inline-block;">
+                                       style="background:#0f172a; color:#ffffff; padding:16px 30px; border-radius:8px; font-weight:600; text-decoration:none; display:inline-block;">
                                     View Report
                                 </a>
                             </div>

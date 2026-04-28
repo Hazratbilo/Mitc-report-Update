@@ -26,11 +26,12 @@ namespace MITCRMS.Controllers
         private readonly IReportServices _reportServices;
         private readonly IDepartmentServices _departmentServices;
         private readonly IIdentityService _identityService;
-        private readonly IReportServices reportServices;
         private readonly ILogger<ReportController> _logger;
         private readonly IWebHostEnvironment _env;
 
+#pragma warning disable CS8618 
         public ReportController(
+#pragma warning restore CS8618
             IReportServices reportServices,
             IDepartmentServices departmentServices,
             IIdentityService identityService, IWebHostEnvironment env,

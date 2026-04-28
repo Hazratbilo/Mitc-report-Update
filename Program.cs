@@ -46,7 +46,7 @@ builder.Services.Scan(scan => scan
     // register all *Repository classes as their implemented interfaces
     .AddClasses(classes => classes.Where(t => t.Name.EndsWith("Repository") || t.Name.EndsWith("Repositories")))
         .AsImplementedInterfaces()
-        .WithScopedLifetime()
+         .WithScopedLifetime()
 );
 
 

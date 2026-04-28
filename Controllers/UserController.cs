@@ -184,7 +184,9 @@ namespace MITCRMS.Controllers
 
             var user = await _userService.GetUserProfileByUserId(userId, CancellationToken.None);
 
+#pragma warning disable CS8602
             if (user == null || !user.Status) return NotFound(user.Message);
+#pragma warning restore CS8602 
 
             return View(user);
         }
