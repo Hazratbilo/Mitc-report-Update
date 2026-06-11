@@ -148,10 +148,10 @@ namespace MITCRMS.Controllers
 
             return RedirectToAction(nameof(Details), new { id });
         }
-      
+
         [HttpGet]
         [Authorize(Roles = "Tutor,Hod,Bursar,Admin")]
-        public async Task<IActionResult> GetMyReports()
+        public async Task<IActionResult> GetMyReports(string? status = null)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim))
@@ -165,8 +165,22 @@ namespace MITCRMS.Controllers
             }
 
             var resp = await _reportServices.GetMyReportsAsync(userId);
+            var reports = (resp.Data ?? Enumerable.Empty<ReportDto>()).ToList();
 
-            return View(resp.Data);
+            if (!string.IsNullOrEmpty(status))
+            {
+                if (Enum.TryParse<ReportStatus>(status, ignoreCase: true, out var parsedStatus))
+                {
+                    reports = reports.Where(r => r.Status == parsedStatus).ToList();
+                }
+                else
+                {
+                    reports = new List<ReportDto>();
+                }
+            }
+
+            ViewBag.StatusFilter = status;
+            return View(reports);
         }
         [HttpGet]
         [Authorize(Roles = "Hod")]
